@@ -1,0 +1,50 @@
+name: Add 100 Prompts IA menu link
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-100-prompts-menu.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-menu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Add menu item without replacing existing site
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          if 'href="https://carlosguerraoficial.com/carlos-guerra/"' in html or 'href="/carlos-guerra/"' in html:
+              print('100 Prompts IA menu item already exists.')
+              raise SystemExit(0)
+
+          pattern = r'(<a\s+href="https://carlosguerraoficial\.com/taller-ventas-digitales-ia/"[^>]*>Taller</a>)'
+          replacement = r'\1\n      <a href="https://carlosguerraoficial.com/carlos-guerra/" style="font-size:14px;font-weight:600;color:inherit;text-decoration:none;">100 Prompts IA</a>'
+          patched, count = re.subn(pattern, replacement, html, count=1)
+
+          if count != 1:
+              raise SystemExit('No se encontró el enlace Taller esperado; no se modificó index.html.')
+
+          path.write_text(patched, encoding='utf-8')
+          print('Menu item inserted successfully.')
+      - name: Commit menu patch
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "feat: add 100 Prompts IA menu tab"
+          git push
