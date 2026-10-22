@@ -32,12 +32,30 @@
 <style>
 body{margin:0;background:#0d0d0d;color:#ffffff;font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#ffffff}a:hover{color:#FFC107}
-.btn-amarillo{transition:transform .15s ease, box-shadow .15s ease}
-.btn-amarillo:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,193,7,.45);color:#0d0d0d}
-.btn-outline{transition:border-color .15s ease}
-.btn-outline:hover{border-color:#FFC107;color:#ffffff}
-.btn-wa{transition:transform .15s ease}
-.btn-wa:hover{transform:translateY(-2px);color:#ffffff}
+.btn-amarillo,.btn-outline,.btn-wa{position:relative;overflow:hidden;isolation:isolate;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,background-color .22s ease,border-color .22s ease,filter .22s ease}
+.btn-amarillo::after,.btn-wa::after{content:"";position:absolute;top:0;bottom:0;left:-75%;width:50%;background:linear-gradient(110deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);pointer-events:none;z-index:1;opacity:0}
+.btn-amarillo svg,.btn-outline svg,.btn-wa svg{transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.btn-amarillo:hover,.btn-amarillo:focus-visible{color:#0d0d0d}
+.btn-outline:hover,.btn-outline:focus-visible{color:#ffffff;border-color:#FFC107!important;background-color:rgba(255,193,7,.12)!important}
+.btn-wa:hover,.btn-wa:focus-visible{color:#ffffff;background-color:#1a9150!important}
+@media (hover:hover){
+.btn-amarillo:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 34px rgba(255,193,7,.55)!important;filter:brightness(1.06)}
+.btn-amarillo:hover::after,.btn-wa:hover::after{opacity:1;animation:barrido .7s ease forwards}
+.btn-outline:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(255,193,7,.22)}
+.btn-wa:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,145,80,.45)}
+.btn-amarillo:hover svg,.btn-outline:hover svg,.btn-wa:hover svg{transform:scale(1.15) rotate(-6deg)}
+.pago-menu summary:hover{background:rgba(255,193,7,.1)}
+.pago-opt:hover{box-shadow:inset 4px 0 0 #FFC107}
+.perfil-opt:hover{border-color:#FFC107!important}
+nav[aria-label="Secciones"] a:not(.btn-amarillo){background-image:linear-gradient(#FFC107,#FFC107);background-size:0 2px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .25s ease,color .2s ease;padding-bottom:2px}
+nav[aria-label="Secciones"] a:not(.btn-amarillo):hover{background-size:100% 2px}
+}
+.btn-amarillo:active,.btn-outline:active,.btn-wa:active{transform:translateY(0) scale(.97)}
+.pago-menu summary{transition:background-color .2s ease}
+.pago-opt{transition:background-color .2s ease,box-shadow .2s ease}
+.perfil-opt{transition:border-color .2s ease}
+@keyframes barrido{from{left:-75%}to{left:125%}}
+@media (prefers-reduced-motion: reduce){.btn-amarillo,.btn-outline,.btn-wa,.btn-amarillo svg,.btn-outline svg,.btn-wa svg{transition:none}.btn-amarillo:hover,.btn-outline:hover,.btn-wa:hover,.btn-amarillo:active,.btn-outline:active,.btn-wa:active,.btn-amarillo:hover svg,.btn-outline:hover svg,.btn-wa:hover svg{transform:none}.btn-amarillo::after,.btn-wa::after{display:none}}
 summary{cursor:pointer;list-style:none}
 summary::-webkit-details-marker{display:none}
 details[open] .faq-plus{transform:rotate(45deg)}
